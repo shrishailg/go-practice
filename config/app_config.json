@@ -1,0 +1,17 @@
+{
+    "app_name" : "go-practice",
+    "logging":{
+        "stadout":false,
+        "level": "debug",
+        "path": "app_logs.log"
+    },
+    "server":{
+    "port": 9090,
+    "read_timeout": 100,
+    "write_timeout": 100
+    },
+    "authentication":{
+        "header_key" : "token",
+        "header_value" :"app_user"
+    }
+}

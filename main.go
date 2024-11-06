@@ -1,8 +1,21 @@
 package main
 
-import "fmt"
+import (
+	"github.com/go-practice/config"
+	"github.com/go-practice/internal/logger"
+
+	// files "github.com/go-practice/internal/files"
+	router "github.com/go-practice/cmd/router"
+)
 
 func main() {
-	fmt.Println("Hello Shrishail")
-	fmt.Println("Welcome to go project buddy")
+
+	//init configs
+	config.Init()
+
+	//to handle logs
+	logger.Init()
+
+	router.Init()
+
 }
