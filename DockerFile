@@ -8,7 +8,7 @@ WORKDIR /go-practice
 COPY go.mod go.sum ./
 
 # Install dependencies
-RUN go mod vendor
+RUN go mod tidy
 
 # Copy the application code
 COPY . .

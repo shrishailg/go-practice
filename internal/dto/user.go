@@ -1,10 +1,13 @@
 package dto
 
+import "gorm.io/gorm"
+
 type (
 	User struct {
-		ID           string `json:"id"`
-		Username     string `json:"user_name"`
+		gorm.Model
+		Username     string `json:"name"`
 		UserLastName string `json:"last_name"`
 		Age          int    `json:"age"`
+		Email        string `json:"email"`
 	}
 )

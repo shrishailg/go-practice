@@ -13,5 +13,16 @@
     "authentication":{
         "header_key" : "token",
         "header_value" :"app_user"
+    },
+    "db":{
+        "username":"root",
+        "password":"root@123User",
+        "host":"localhost",
+        "port":"3306",
+        "name":"go_practice",
+        "max_idel_time": 100,
+        "max_open_connections": 100,
+        "max_idle_connections": 100
+
     }
 }

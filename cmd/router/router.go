@@ -1,19 +1,14 @@
 package router
 
-/*
-40 times faster than Martini
-
-*/
-
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/go-practice/cmd/middleware"
-	"github.com/go-practice/cmd/server"
 	"github.com/go-practice/internal/handlers"
 )
 
 var (
 	requestHandlers *handlers.RequestHandler
+	userHandlers    *handlers.UserHandler
 )
 
 func Init() {
@@ -23,14 +18,20 @@ func Init() {
 
 	// http.ListenAndServe(":9090", router)
 
-	router := NewRouter()
+	// router := NewRouter()
 
-	server := server.NewServer(router)
+	// server := server.NewServer(router)
 
-	server.ListenAndServe()
+	// server.ListenAndServe()
 }
 
-func NewRouter() *gin.Engine {
+func NewRouter(requestHandler *handlers.RequestHandler, userHandler *handlers.UserHandler) *gin.Engine {
+	requestHandlers = requestHandler
+	userHandlers = userHandler
+	return InitRouter()
+}
+
+func InitRouter() *gin.Engine {
 	// this will create gin with default middleware for logger and recovery
 	// router := gin.Default()
 
@@ -52,6 +53,16 @@ func NewRouter() *gin.Engine {
 
 	initAdminRouters(router)
 	initClientRouters(router)
+
+	// user details routers
+	//create user
+	router.POST("/users", userHandlers.CreateUser)
+
+	//create user
+	router.GET("/users", userHandlers.GetUsers)
+
+	//create user
+	router.GET("/users/:name", userHandlers.GetUser)
 
 	return router
 }

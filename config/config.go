@@ -8,15 +8,15 @@ import (
 
 var Config *viper.Viper
 
-func Init() {
+func LoadConfig() {
 	Config = viper.New()
-	Config.SetConfigType("json")
 	Config.SetConfigName("app_config")
+	Config.SetConfigType("json")
 	Config.AddConfigPath("/config/")
 	Config.AddConfigPath("./config/")
 	Config.AddConfigPath("*/config/")
 
 	if err := Config.ReadInConfig(); err != nil {
-		log.Fatal("Error reading config", err.Error())
+		log.Fatal("Error in intializing config", err.Error())
 	}
 }
