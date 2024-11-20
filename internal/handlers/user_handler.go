@@ -30,7 +30,7 @@ func (h *UserHandler) CreateUser(ctx *gin.Context) {
 }
 
 func (h *UserHandler) GetUsers(ctx *gin.Context) {
-	var users *[]dto.User
+	var users []*dto.User
 
 	if output, err := h.userService.GetUsers(ctx, users); err != nil {
 		ctx.AbortWithStatusJSON(http.StatusInternalServerError, gin.H{"error": err})
