@@ -4,66 +4,67 @@ import (
 	"context"
 
 	"github.com/go-practice/internal/dto"
+	"github.com/go-practice/internal/models"
 	"gorm.io/gorm"
 )
 
-type IRepository interface {
-	Create(ctx context.Context, user *dto.User) (*dto.User, error)
-	Update(ctx context.Context, user *dto.User) (*dto.User, error)
-	GetUsers(ctx context.Context, users *[]dto.User) (*[]dto.User, error)
-	GetUser(ctx context.Context, user *dto.User, name string) (*dto.User, error)
-	Delete(ctx context.Context, user *dto.User, id int) (*dto.User, error)
+type Repository[M models.MODEL] interface {
+	Create(ctx context.Context, model M) (M, error)
+	Update(ctx context.Context, model M) (M, error)
+	GetUsers(ctx context.Context, model []M) ([]M, error)
+	GetUser(ctx context.Context, model M, name string) (M, error)
+	Delete(ctx context.Context, model M, id int) (M, error)
 }
 
-type Repository struct {
+type RepositoryImpl[M models.MODEL] struct {
 	db *gorm.DB
 }
 
-func NewRepository(db *gorm.DB) *Repository {
-	return &Repository{db: db}
+func NewRepository[M models.MODEL](db *gorm.DB) *RepositoryImpl[M] {
+	return &RepositoryImpl[M]{db: db}
 }
 
 // create a user
-func (r *Repository) Create(ctx context.Context, user *dto.User) (*dto.User, error) {
-	err := r.db.Create(user).Error
+func (r *RepositoryImpl[M]) Create(ctx context.Context, model M) (M, error) {
+	err := r.db.Create(&model).Error
 	if err != nil {
 		return nil, err
 	}
-	return user, nil
+	return model, nil
 }
 
 // update user
-func (r *Repository) Update(ctx context.Context, user *dto.User) (*dto.User, error) {
-	err := r.db.Save(&user).Error
+func (r *RepositoryImpl[M]) Update(ctx context.Context, model M) (*dto.User, error) {
+	err := r.db.Save(&model).Error
 	if err != nil {
 		return nil, err
 	}
-	return user, nil
+	return model, nil
 }
 
-func (r *Repository) GetUsers(ctx context.Context, users *[]dto.User) (*[]dto.User, error) {
-	err := r.db.Find(&users).Error
+func (r *RepositoryImpl[M]) GetUsers(ctx context.Context, model []M) ([]M, error) {
+	err := r.db.Find(&model).Error
 	if err != nil {
 		return nil, err
 	}
-	return users, nil
+	return model, nil
 }
 
 // get user by id
-func (r *Repository) GetUser(ctx context.Context, user *dto.User, name string) (*dto.User, error) {
-	err := r.db.Where("name = ?", name).First(&user).Error
+func (r *RepositoryImpl[M]) GetUser(ctx context.Context, model M, name string) (M, error) {
+	err := r.db.Where("name = ?", name).First(&model).Error
 	if err != nil {
 		return nil, err
 	}
-	return user, nil
+	return model, nil
 }
 
 // delete user
-func (r *Repository) Delete(ctx context.Context, user *dto.User, id int) (*dto.User, error) {
-	err := r.db.Where("id = ?", id).Find(&user).Delete(&user).Error
+func (r *RepositoryImpl[M]) Delete(ctx context.Context, model M, id int) (M, error) {
+	err := r.db.Where("id = ?", id).Find(&model).Delete(&model).Error
 	if err != nil {
 		return nil, err
 	}
 
-	return user, nil
+	return model, nil
 }

@@ -9,10 +9,10 @@ import (
 )
 
 type UserService struct {
-	repository repository.IRepository
+	repository repository.Repository[*dto.User]
 }
 
-func NewUserService(repository repository.IRepository) *UserService {
+func NewUserService(repository repository.Repository[*dto.User]) *UserService {
 	return &UserService{repository: repository}
 }
 
@@ -30,7 +30,7 @@ func (s *UserService) CreateUser(ctx context.Context, user *dto.User) (*dto.User
 }
 
 // get users
-func (s *UserService) GetUsers(ctx context.Context, users *[]dto.User) (*[]dto.User, error) {
+func (s *UserService) GetUsers(ctx context.Context, users []*dto.User) ([]*dto.User, error) {
 	span, ctx := opentracing.StartSpanFromContext(ctx, "UserService.GetUsers")
 	defer span.Finish()
 
